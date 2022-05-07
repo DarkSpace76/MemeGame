@@ -14,10 +14,11 @@ Widget appText(
     {required String text,
     Color? color,
     double? size,
+    TextAlign textAlign = TextAlign.center,
     TextStyle? customStyle}) {
   return Text(
     text,
-    textAlign: TextAlign.center,
+    textAlign: textAlign,
     style: customStyle ?? _getStyle(color: color, size: size),
   );
 }

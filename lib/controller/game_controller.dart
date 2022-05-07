@@ -31,7 +31,7 @@ class GameController extends GetxController {
 
   void _loadQuestions() async {
     _isLoadQuestions.value = true;
-    String response = await rootBundle.loadString('questions/data.txt');
+    String response = await rootBundle.loadString('assets/questions/data.txt');
 
     Iterable<String> list = LineSplitter.split(response);
     for (var element in list) {
@@ -56,6 +56,10 @@ class GameController extends GetxController {
   void endGame() {
     _gameState.value.value = GameState.end;
     _palyerMode = false;
+    for (var item in _players.value.value) {
+      item.score = 0;
+    }
+    currentPlayer = null;
   }
 
   void nextPage() {

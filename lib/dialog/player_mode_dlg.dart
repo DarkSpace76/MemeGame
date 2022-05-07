@@ -139,16 +139,19 @@ Widget _pageViewTwo(GameController controller,
 
 Widget _emptyHolder() {
   Widget mobile() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.receipt_long, size: 70, color: Colors.grey.withOpacity(0.3)),
-        const SizedBox(width: 15),
-        appText(
-            text: 'Список игроков пуст',
-            size: 30,
-            color: Colors.grey.withOpacity(0.3)),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.receipt_long,
+              size: 70, color: Colors.grey.withOpacity(0.3)),
+          const SizedBox(width: 15),
+          appText(
+              text: 'Список игроков пуст',
+              size: 30,
+              color: Colors.grey.withOpacity(0.3)),
+        ],
+      ),
     );
   }
 
