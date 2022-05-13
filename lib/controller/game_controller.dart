@@ -21,6 +21,9 @@ class GameController extends GetxController {
   bool get isPlayerMode => _palyerMode;
   GameState get isGameState => _gameState.value.value;
 
+  var _sizeQuestText = Rx<double?>(null).obs;
+  double? textSize() => _sizeQuestText.value.value;
+
   bool isLoadingQuestion() => _isLoadQuestions.value;
   bool isPlayersNotEmpty() => _players.value.value.length >= 3;
   bool isPlayersEmpty() => _players.value.value.isEmpty;
@@ -39,6 +42,22 @@ class GameController extends GetxController {
     }
     _isLoadQuestions.value = false;
     nextQuest();
+  }
+
+  void initSizeText(double value) {
+    _sizeQuestText.value.value ??= value;
+  }
+
+  void incSizeText() {
+    if (_sizeQuestText.value.value != null) {
+      _sizeQuestText.value.value = _sizeQuestText.value.value! + 1;
+    }
+  }
+
+  void decSizeText() {
+    if (_sizeQuestText.value.value != null) {
+      _sizeQuestText.value.value = _sizeQuestText.value.value! - 1;
+    }
   }
 
   void playerModeOn() {

@@ -54,7 +54,8 @@ Widget _pageViewFirst(GameController controller) {
         mobile: Column(children: child),
         desctop:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: child),
-        tablet: Row(children: child));
+        tablet:
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: child));
   }
 
   return Column(
@@ -185,8 +186,11 @@ Widget _addNewPlayerButton({Function()? onPress}) {
 
 Widget _startGameButton({Function()? onPress}) {
   return CupertinoButton(
+    padding: EdgeInsets.zero,
     onPressed: onPress,
-    child: appText(text: 'Начать игру'),
+    child: Responsive.isMobile(Get.context!)
+        ? const Icon(Icons.flag_circle, color: Colors.blue)
+        : appText(text: 'Начать игру'),
   );
 }
 

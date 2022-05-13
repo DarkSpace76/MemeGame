@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget gameText({required BuildContext context, required String text}) {
+Widget gameText(
+    {required BuildContext context, required String text, double? textSize}) {
   return Text(
     text,
     textAlign: TextAlign.center,
-    style: _getStyle(size: MediaQuery.of(context).size.width * 0.05),
+    style: _getStyle(size: textSize),
   );
 }
 

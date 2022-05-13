@@ -6,6 +6,7 @@ import 'package:mems_game/components/app_text.dart';
 import 'package:mems_game/components/button.dart';
 import 'package:mems_game/components/player_item_for_game.dart';
 import 'package:mems_game/controller/game_controller.dart';
+import 'package:mems_game/dialog/end_game.dart';
 import 'package:mems_game/dialog/player_mode_dlg.dart';
 import 'package:mems_game/model/player.dart';
 import 'package:mems_game/responsive.dart';
@@ -21,6 +22,7 @@ class MyGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       home: HomePage(),
     );
   }
@@ -159,6 +161,8 @@ class GameSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //gameController.initSizeText(adaptiveTextSize);
+    print(gameController.textSize);
     return SafeArea(
       child: Obx(() => !gameController.isLoadingQuestion()
           ? Stack(
@@ -176,7 +180,9 @@ class GameSheet extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: gameText(
                                 context: context,
-                                text: gameController.getQuest()),
+                                text: gameController.getQuest(),
+                                textSize: gameController.textSize() ??
+                                    MediaQuery.of(context).size.width * 0.05),
                           ),
                         ),
                       ),
@@ -190,13 +196,41 @@ class GameSheet extends StatelessWidget {
                 Positioned(
                     top: 10,
                     right: 10,
-                    child: skipButton(
-                        title: 'Завершить',
-                        borderColor: Colors.grey.withOpacity(0.3),
-                        textColor: Colors.grey.withOpacity(0.3),
+                    child: textSizeButton(
+                        iconData: Icons.logout,
                         onPress: () {
-                          gameController.endGame();
+                          showDialog<DialogResult?>(
+                              context: context,
+                              builder: (ctx) {
+                                return endGameDialog();
+                              }).then((value) {
+                            if (value != null && value == DialogResult.end) {
+                              gameController.endGame();
+                            }
+                          });
                         })),
+                Positioned(
+                    left: 10,
+                    top: 10,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        textSizeButton(
+                            iconData: Icons.remove,
+                            onPress: () {
+                              gameController.initSizeText(
+                                  MediaQuery.of(context).size.width * 0.05);
+                              gameController.decSizeText();
+                            }),
+                        textSizeButton(
+                            iconData: Icons.add,
+                            onPress: () {
+                              gameController.initSizeText(
+                                  MediaQuery.of(context).size.width * 0.05);
+                              gameController.incSizeText();
+                            })
+                      ],
+                    )),
               ],
             )
           : const Center(child: CircularProgressIndicator())),

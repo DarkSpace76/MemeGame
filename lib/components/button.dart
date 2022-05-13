@@ -35,3 +35,14 @@ Widget skipButton(
     ),
   );
 }
+
+Widget textSizeButton({required IconData iconData, Function()? onPress}) {
+  return InkWell(
+    borderRadius: BorderRadius.circular(360),
+    onTap: onPress,
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Icon(iconData, color: Colors.grey),
+    ),
+  );
+}
