@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,8 @@ class GameController extends GetxController {
   var _players = Rx<List<Player>>([]).obs;
   Player? currentPlayer;
   List<String> _questions = [];
-  RxInt _currentQuestIndex = 0.obs;
+  List<String> _usedQuestions = [];
+  RxInt _currentQuestIndex = (-1).obs;
   RxBool _isLoadQuestions = false.obs;
   PageController _pageController = PageController();
   var _gameState = Rx<GameState>(GameState.end).obs;
@@ -106,11 +108,36 @@ class GameController extends GetxController {
   }
 
   void nextQuest() {
-    if (_currentQuestIndex.value + 1 > _questions.length) {
+    if (_currentQuestIndex.value > -1) {
+      _moveQuest();
+    }
+
+    if (_questions.length > 1) {
+      _genRandQuestNumber(_questions.length - 1);
+    } else {
+      _resetQuestList();
+      _genRandQuestNumber(_questions.length - 1);
+    }
+
+    /* if (_currentQuestIndex.value + 1 > _questions.length) {
       _currentQuestIndex.value = 0;
     } else {
       _currentQuestIndex.value++;
-    }
+    } */
+  }
+
+  void _resetQuestList() {
+    _questions.addAll(_usedQuestions);
+    _usedQuestions.clear();
+  }
+
+  void _moveQuest() {
+    _usedQuestions.add(_questions[_currentQuestIndex.value]);
+    _questions.removeAt(_currentQuestIndex.value);
+  }
+
+  void _genRandQuestNumber(int range) {
+    _currentQuestIndex.value = Random().nextInt(range);
   }
 
   String getQuest() {
